@@ -1,12 +1,12 @@
 class Location {
   final String? locID, locName, description, staffID;
-  final List<DateTime>? availability;
-  final List<String>? images;
-  final List<int>? prices;
+  final List<dynamic>? availability;
+  final List<dynamic>? images;
+  final List<dynamic>? prices;
   final double? rating;
   final int? capacity;
-  final List<String>? geolocation;
-  final List<String>? tags;
+  final List<dynamic>? geolocation;
+  final List<dynamic>? tags;
 
   Location(
       {this.locID,

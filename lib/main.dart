@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_kenya/services/auth.dart';
 import 'package:go_kenya/widgets/loading.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:go_kenya/wrapper.dart';
 
@@ -24,8 +25,11 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.green,
-        ),
+            primaryColor: HexColor("#25594A"),
+            accentColor: HexColor("#262626"),
+            primaryTextTheme: Theme.of(context)
+                .textTheme
+                .apply(bodyColor: HexColor("#262626"))),
 
         //builds the firebase future
         //checks for errors and returns main screen if connection is successful

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_kenya/models/user.dart';
 import 'package:go_kenya/services/auth.dart';
-import 'package:go_kenya/services/database.dart';
 import 'package:go_kenya/widgets/loading.dart';
 
 class Register extends StatefulWidget {
@@ -14,7 +12,6 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
-  final DatabaseService _database = DatabaseService();
 
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
@@ -156,7 +153,7 @@ class _RegisterState extends State<Register> {
                                 });
                               } else {
                                 //create user in database if no errors
-                                await _database.createUser(
+                                await _auth.createUser(
                                     uid: result.uid,
                                     firstName: firstName,
                                     lastName: lastName,

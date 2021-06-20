@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_kenya/models/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // service for making authentication requests to Firebase
 class AuthService {
@@ -58,6 +59,21 @@ class AuthService {
     } catch (e) {
       print(e);
     }
+  }
+
+  //create user with user ID
+  Future<void>? createUser({uid, firstName, lastName, email}) async {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    await users
+        .doc(uid)
+        .set({
+          'first_name': firstName,
+          'last_name': lastName,
+          'email': email,
+        })
+        .then((value) => print('userAdded'))
+        .catchError((error) => print("Failed to add user: $error"));
   }
 
   //sign out
