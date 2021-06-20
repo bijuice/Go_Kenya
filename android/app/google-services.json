@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "862597331624",
+    "project_id": "gokenya-15c07",
+    "storage_bucket": "gokenya-15c07.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:862597331624:android:bc420c8afbc40a4414a09d",
+        "android_client_info": {
+          "package_name": "com.example.go_kenya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "862597331624-28uvduu60morknsfq1vlvrugov7qpcog.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJHrr0K6--4m5hIHqTkmBp3rCGAfoU--o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "862597331624-28uvduu60morknsfq1vlvrugov7qpcog.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
