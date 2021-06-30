@@ -85,7 +85,7 @@ class _SignInState extends State<SignIn> {
                         hintText: 'Password',
                         icon: Icon(
                           Icons.vpn_key,
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).primaryColor,
                         )),
                     validator: (val) => val!.length < 6
                         ? 'Password must be at least 6 characters long'

@@ -13,17 +13,15 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    Explore(),
-    Favorites(),
-    Inbox(),
-    Profile()
-  ];
+
+  final PageController controller = PageController(initialPage: 0);
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+
+    controller.jumpToPage(index);
   }
 
   @override
@@ -50,14 +48,15 @@ class _HomeState extends State<Home> {
           ),
         ],
         showUnselectedLabels: true,
-        iconSize: 28,
+        iconSize: 25,
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,
         unselectedItemColor: Theme.of(context).accentColor,
         onTap: _onItemTapped,
       ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      body: PageView(
+        children: [Explore(), Favorites(), Inbox(), Profile()],
+        controller: controller,
       ),
     ));
   }
