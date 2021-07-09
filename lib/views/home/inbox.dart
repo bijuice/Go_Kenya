@@ -5,8 +5,18 @@ class Inbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('Inbox'),
+    return Scaffold(
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(8),
+            child: Text(
+              "Inbox",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

@@ -39,7 +39,7 @@ class _RegisterState extends State<Register> {
                     'Register',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.green,
+                        color: Theme.of(context).primaryColor,
                         fontSize: 30),
                   ),
                   SizedBox(
@@ -165,7 +165,7 @@ class _RegisterState extends State<Register> {
                           },
                           child: Text('Register'),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.green,
+                            primary: Theme.of(context).primaryColor,
                           )),
                   SizedBox(
                     height: 50,

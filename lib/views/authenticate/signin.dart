@@ -39,7 +39,7 @@ class _SignInState extends State<SignIn> {
                     'Sign In',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.green,
+                        color: Theme.of(context).primaryColor,
                         fontSize: 30),
                   ),
                   SizedBox(
@@ -52,7 +52,7 @@ class _SignInState extends State<SignIn> {
                         hintText: 'Email',
                         icon: Icon(
                           Icons.person,
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).primaryColor,
                         )),
                     validator: (val) {
                       String email = val.toString();
@@ -130,11 +130,15 @@ class _SignInState extends State<SignIn> {
                               }
 
                               print(result);
+                            } else {
+                              setState(() {
+                                loading = false;
+                              });
                             }
                           },
                           child: Text('Sign In'),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.green,
+                            primary: Theme.of(context).primaryColor,
                           )),
                   SizedBox(
                     height: 50,
