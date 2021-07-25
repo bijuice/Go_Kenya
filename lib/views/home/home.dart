@@ -39,8 +39,8 @@ class _HomeState extends State<Home> {
             label: 'Favorites',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message_rounded),
-            label: 'Inbox',
+            icon: Icon(Icons.flight),
+            label: 'Trips',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

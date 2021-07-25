@@ -6,7 +6,10 @@ class Location {
   final double? rating;
   final int? capacity;
   final List<dynamic>? geolocation;
-  final List<dynamic>? tags;
+  final bool? hasParking;
+  final bool? hasPool;
+  final bool? hasWifi;
+  final bool? hasKitchen;
 
   Location(
       {this.locID,
@@ -19,5 +22,8 @@ class Location {
       this.rating,
       this.capacity,
       this.geolocation,
-      this.tags});
+      this.hasKitchen,
+      this.hasParking,
+      this.hasPool,
+      this.hasWifi});
 }

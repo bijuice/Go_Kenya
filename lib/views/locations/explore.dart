@@ -74,16 +74,6 @@ class _ExploreState extends State<Explore> with AutomaticKeepAliveClientMixin {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 30,
-                    child: IconButton(
-                      splashColor: Theme.of(context).primaryColor,
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.filter_alt,
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
@@ -117,7 +107,10 @@ class _ExploreState extends State<Explore> with AutomaticKeepAliveClientMixin {
                             rating: doc['rating'].toDouble(),
                             geolocation: doc['geo_location'],
                             capacity: doc['capacity'],
-                            tags: doc['tags']);
+                            hasKitchen: doc['hasKitchen'],
+                            hasParking: doc['hasParking'],
+                            hasPool: doc['hasPool'],
+                            hasWifi: doc['hasWifi']);
 
                         locations.add(loc);
                       });
