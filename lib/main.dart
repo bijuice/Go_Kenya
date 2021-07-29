@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
+        title: 'GoKenya!',
         theme: ThemeData(
             primaryColor: HexColor("#25594A"),
             accentColor: HexColor("#262626"),

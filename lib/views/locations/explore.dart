@@ -100,7 +100,6 @@ class _ExploreState extends State<Explore> with AutomaticKeepAliveClientMixin {
                             locID: doc.id,
                             locName: doc['loc_name'],
                             description: doc['description'],
-                            staffID: doc['staff_id'],
                             images: doc['images'],
                             availability: doc['availability'],
                             prices: doc['price'],

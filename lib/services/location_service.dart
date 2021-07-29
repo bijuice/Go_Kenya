@@ -22,4 +22,40 @@ class DatabaseService {
       print('Found file: $ref');
     });
   }
+
+  //save trip to user
+  Future<void> saveTrip(
+      {required String locName,
+      required String uid,
+      required String locID,
+      required DateTime dateFrom,
+      required DateTime dateTo,
+      required int guests,
+      required bool isResident}) async {
+    CollectionReference user = FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('trips');
+
+    user
+        .add({
+          'loc_id': locID,
+          'dateFrom': dateFrom.toString(),
+          'dateTo': dateTo.toString(),
+          'guests': guests,
+          'isResident': isResident,
+          'locName': locName,
+        })
+        .then((value) => print('trip added'))
+        .catchError((error) => print('failed to add trip'));
+  }
+
+  //get all trips for user
+  Future<QuerySnapshot> getTrips({required uid}) async {
+    return await firestore
+        .collection('users')
+        .doc(uid)
+        .collection('trips')
+        .get();
+  }
 }

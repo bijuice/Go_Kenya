@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_kenya/views/home/favorites.dart';
-import 'package:go_kenya/views/home/inbox.dart';
 import 'package:go_kenya/views/home/profile.dart';
+import 'package:go_kenya/views/home/trips.dart';
 import 'package:go_kenya/views/locations/explore.dart';
 
 class Home extends StatefulWidget {
@@ -35,10 +34,6 @@ class _HomeState extends State<Home> {
             label: 'Explore',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favorites',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.flight),
             label: 'Trips',
           ),
@@ -55,7 +50,7 @@ class _HomeState extends State<Home> {
         onTap: _onItemTapped,
       ),
       body: PageView(
-        children: [Explore(), Favorites(), Inbox(), Profile()],
+        children: [Explore(), Trips(), Profile()],
         controller: controller,
       ),
     ));

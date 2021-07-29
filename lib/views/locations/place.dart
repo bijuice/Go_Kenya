@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:go_kenya/models/location.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_kenya/services/auth.dart';
+import 'package:go_kenya/views/locations/thanks.dart';
 import 'package:intl/intl.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:go_kenya/services/location_service.dart';
 
 class Place extends StatefulWidget {
   final Location loc;
@@ -17,22 +19,75 @@ class Place extends StatefulWidget {
 }
 
 class _PlaceState extends State<Place> {
-  //init firebase
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  //init database service
+  DatabaseService dbService = new DatabaseService();
+  AuthService auth = new AuthService();
 
   double distance = 0;
   bool open = false;
   var formatter = DateFormat('MMMd');
   int guests = 1;
   bool showCalendar = false;
-  double sliderMaxHeight = 400;
+  double sliderMaxHeight = 600;
   DateTime dateFrom = DateTime.now(),
       dateTo = DateTime.now().add(Duration(days: 1));
+  String uid = '';
+  bool isResident = true;
+  bool favorite = false;
 
   @override
   void initState() {
     super.initState();
     _getCurrentLocation();
+    _getCurrentUser();
+  }
+
+  //get current user
+  void _getCurrentUser() async {
+    var id = await auth.getCurrentUser();
+    setState(() {
+      uid = id;
+    });
+  }
+
+  //show dialog
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Booking'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                    "Book accomodation at ${widget.loc.locName} from ${formatter.format(dateFrom)} to ${formatter.format(dateTo)}?"),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () async {
+                //save location
+                _saveTrip();
+
+                //navigate to thanks screen
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Thanks()));
+              },
+            ),
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   //get disance from you
@@ -57,8 +112,22 @@ class _PlaceState extends State<Place> {
         double.parse(widget.loc.geolocation![1]));
   }
 
+  //save new trip
+  void _saveTrip() async {
+    await dbService.saveTrip(
+        locName: widget.loc.locName.toString(),
+        uid: uid,
+        locID: widget.loc.locID.toString(),
+        dateFrom: dateFrom,
+        dateTo: dateTo,
+        guests: guests,
+        isResident: isResident);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final int stayDuration = dateTo.difference(dateFrom).inDays;
+
     return SafeArea(
       child: Scaffold(
         body: SlidingUpPanel(
@@ -93,6 +162,7 @@ class _PlaceState extends State<Place> {
                     size: 30,
                   ),
                 ),
+
                 Center(
                   child: Text(
                     'Reserve',
@@ -106,6 +176,8 @@ class _PlaceState extends State<Place> {
                   'Your trip',
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
+
+                //dates
                 Padding(
                   padding: const EdgeInsets.only(top: 30, bottom: 10),
                   child: Text(
@@ -177,8 +249,7 @@ class _PlaceState extends State<Place> {
                                 lastDate:
                                     DateTime.now().add(Duration(days: 365)))
                             .then((date) => {
-                                  if (date != null &&
-                                      date.compareTo(dateFrom) == 0)
+                                  if (date != null)
                                     {
                                       setState(() {
                                         dateTo = date;
@@ -205,6 +276,8 @@ class _PlaceState extends State<Place> {
                     ),
                   ],
                 ),
+
+                //guests
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: Text(
@@ -248,6 +321,75 @@ class _PlaceState extends State<Place> {
                         )),
                   ],
                 ),
+
+                //resident
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 10),
+                  child: Text(
+                    'Are you a resident of Kenya?',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Row(
+                  children: [
+                    TextButton(
+                        style: ButtonStyle(
+                            backgroundColor: isResident
+                                ? MaterialStateProperty.all(Colors.green[300])
+                                : MaterialStateProperty.all(Colors.white)),
+                        onPressed: () {
+                          setState(() {
+                            isResident = true;
+                          });
+                        },
+                        child: Text(
+                          'Yes',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        )),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    TextButton(
+                        style: ButtonStyle(
+                            backgroundColor: !isResident
+                                ? MaterialStateProperty.all(Colors.green[300])
+                                : MaterialStateProperty.all(Colors.white)),
+                        onPressed: () {
+                          setState(() {
+                            isResident = false;
+                          });
+                        },
+                        child: Text(
+                          'No',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        )),
+                  ],
+                ),
+
+                //total cost
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 10),
+                  child: Text(
+                    'Total Cost',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Text(
+                  isResident
+                      ? "${stayDuration * int.parse(widget.loc.prices![0].replaceAll(',', ''))} Ksh"
+                      : "\$${stayDuration * int.parse(widget.loc.prices![1].replaceAll(',', ''))}",
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+
+                //bottom buttons
                 Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -266,7 +408,7 @@ class _PlaceState extends State<Place> {
                       width: 40,
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: _showMyDialog,
                       child: Text(
                         'Book Now',
                         style: TextStyle(
@@ -283,7 +425,7 @@ class _PlaceState extends State<Place> {
 
           //main body
           body: Padding(
-            padding: const EdgeInsets.only(bottom: 100),
+            padding: const EdgeInsets.only(bottom: 90),
             child: ListView(
               children: [
                 Column(
@@ -331,16 +473,6 @@ class _PlaceState extends State<Place> {
                                 child: BackButton(
                                   color: Colors.white,
                                 ),
-                                backgroundColor: Theme.of(context).primaryColor,
-                              ),
-                              Spacer(),
-                              CircleAvatar(
-                                child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.favorite,
-                                      color: Colors.white,
-                                    )),
                                 backgroundColor: Theme.of(context).primaryColor,
                               ),
                             ],
@@ -588,7 +720,6 @@ class _PlaceState extends State<Place> {
                       endIndent: 60,
                       color: Theme.of(context).primaryColor,
                     ),
-                    Text('Reviews')
                   ],
                 ),
               ],
