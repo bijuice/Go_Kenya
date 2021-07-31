@@ -31,7 +31,8 @@ class DatabaseService {
       required DateTime dateFrom,
       required DateTime dateTo,
       required int guests,
-      required bool isResident}) async {
+      required bool isResident,
+      required List<dynamic>? prices}) async {
     CollectionReference user = FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
@@ -45,6 +46,7 @@ class DatabaseService {
           'guests': guests,
           'isResident': isResident,
           'locName': locName,
+          'prices': prices,
         })
         .then((value) => print('trip added'))
         .catchError((error) => print('failed to add trip'));

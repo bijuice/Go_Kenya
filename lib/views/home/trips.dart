@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_kenya/models/trip.dart';
@@ -39,15 +37,6 @@ class _TripsState extends State<Trips> {
     });
   }
 
-  // void _getTrips() async {
-  //   //get current user
-  //   var uid = await _auth.getCurrentUser();
-
-  //   setState(() {
-  //     getTrips = _db.getTrips(uid: uid);
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,10 +61,6 @@ class _TripsState extends State<Trips> {
                       future: _db.getTrips(uid: uid),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (snapshot.hasError) {
-                          return Text('Something went wrong');
-                        }
-
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return Loading();
@@ -90,7 +75,8 @@ class _TripsState extends State<Trips> {
                               guests: doc['guests'],
                               isResident: doc['isResident'],
                               locID: doc['loc_id'],
-                              locName: doc['locName']);
+                              locName: doc['locName'],
+                              prices: doc['prices']);
 
                           trips.add(trip);
                         });
@@ -98,10 +84,11 @@ class _TripsState extends State<Trips> {
                         return ListView.builder(
                             itemCount: trips.length,
                             itemBuilder: (context, index) {
-                              final int stayDuration = trips[index]
-                                  .dateTo
-                                  .difference(trips[index].dateFrom)
-                                  .inDays;
+                              // final int stayDuration = trips[index]
+                              //     .dateTo
+                              //     .difference(trips[index].dateFrom)
+                              //     .inDays;
+
                               return Container(
                                 child: Card(
                                   child: Padding(
@@ -130,7 +117,6 @@ class _TripsState extends State<Trips> {
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
-                                              Text('cost')
                                             ])
                                       ],
                                     ),

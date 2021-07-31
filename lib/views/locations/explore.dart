@@ -64,16 +64,16 @@ class _ExploreState extends State<Explore> with AutomaticKeepAliveClientMixin {
                     style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
                   Spacer(),
-                  SizedBox(
-                    height: 30,
-                    child: IconButton(
-                      splashColor: Theme.of(context).primaryColor,
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.search,
-                      ),
-                    ),
-                  ),
+                  // SizedBox(
+                  //   height: 30,
+                  //   child: IconButton(
+                  //     splashColor: Theme.of(context).primaryColor,
+                  //     onPressed: () {},
+                  //     icon: Icon(
+                  //       Icons.search,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_kenya/views/home/home.dart';
 
 class Thanks extends StatelessWidget {
   const Thanks({Key? key}) : super(key: key);
@@ -14,18 +13,16 @@ class Thanks extends StatelessWidget {
           Center(
               child: Container(
             child: Text(
-              'Thank you for your booking!',
-              style: TextStyle(
-                  color: Theme.of(context).primaryColor, fontSize: 30),
+              'Payment Failed',
+              style: TextStyle(color: Colors.red, fontSize: 30),
             ),
           )),
           SizedBox(
             height: 15,
           ),
           Center(
-            child: Text('You can find your trips in the trips tab',
-                style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 20)),
+            child: Text('Please try again',
+                style: TextStyle(color: Colors.red, fontSize: 20)),
           ),
           SizedBox(
             height: 100,
@@ -35,11 +32,10 @@ class Thanks extends StatelessWidget {
                   backgroundColor: MaterialStateProperty.all(
                       Theme.of(context).primaryColor)),
               onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Home()));
+                Navigator.pop(context);
               },
               child: Text(
-                'Go Home',
+                'Back',
                 style: TextStyle(
                   fontSize: 20,
                 ),

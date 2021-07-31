@@ -4,6 +4,7 @@ class Trip {
   final bool isResident;
   final String locID;
   final String locName;
+  final List<String> prices;
 
   Trip(
       {required this.locName,
@@ -11,5 +12,6 @@ class Trip {
       required this.dateTo,
       required this.guests,
       required this.isResident,
-      required this.locID});
+      required this.locID,
+      required this.prices});
 }

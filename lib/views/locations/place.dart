@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:go_kenya/services/location_service.dart';
+import 'package:flutter_braintree/flutter_braintree.dart';
 
 class Place extends StatefulWidget {
   final Location loc;
@@ -115,6 +116,7 @@ class _PlaceState extends State<Place> {
   //save new trip
   void _saveTrip() async {
     await dbService.saveTrip(
+        prices: widget.loc.prices,
         locName: widget.loc.locName.toString(),
         uid: uid,
         locID: widget.loc.locID.toString(),
@@ -123,6 +125,22 @@ class _PlaceState extends State<Place> {
         guests: guests,
         isResident: isResident);
   }
+
+  // void _pay() async {
+  //   final request = BraintreeDropInRequest(
+  //     tokenizationKey: 'sandbox_q7s5sw9y_yq3krdyw46tpdh2h',
+  //     collectDeviceData: true,
+  //     paypalRequest: BraintreePayPalRequest(
+  //       amount: '4.20',
+  //       displayName: 'Example company',
+  //     ),
+  //   );
+  //   BraintreeDropInResult? result = await BraintreeDropIn.start(request);
+  //   if (result != null) {
+  //     print(result.paymentMethodNonce.description);
+  //     print(result.paymentMethodNonce.nonce);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -408,7 +426,7 @@ class _PlaceState extends State<Place> {
                       width: 40,
                     ),
                     TextButton(
-                      onPressed: _showMyDialog,
+                      onPressed: () {},
                       child: Text(
                         'Book Now',
                         style: TextStyle(
