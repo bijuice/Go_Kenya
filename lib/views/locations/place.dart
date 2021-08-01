@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:go_kenya/models/location.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_kenya/services/auth.dart';
+import 'package:go_kenya/views/locations/failedpayment.dart';
 import 'package:go_kenya/views/locations/thanks.dart';
 import 'package:intl/intl.dart';
 import 'package:maps_launcher/maps_launcher.dart';
@@ -51,46 +52,6 @@ class _PlaceState extends State<Place> {
     });
   }
 
-  //show dialog
-  Future<void> _showMyDialog() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm Booking'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(
-                    "Book accomodation at ${widget.loc.locName} from ${formatter.format(dateFrom)} to ${formatter.format(dateTo)}?"),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Yes'),
-              onPressed: () async {
-                //save location
-                _saveTrip();
-
-                //navigate to thanks screen
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Thanks()));
-              },
-            ),
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   //get disance from you
   void _getCurrentLocation() async {
     Position position = await Geolocator.getCurrentPosition(
@@ -126,25 +87,37 @@ class _PlaceState extends State<Place> {
         isResident: isResident);
   }
 
-  // void _pay() async {
-  //   final request = BraintreeDropInRequest(
-  //     tokenizationKey: 'sandbox_q7s5sw9y_yq3krdyw46tpdh2h',
-  //     collectDeviceData: true,
-  //     paypalRequest: BraintreePayPalRequest(
-  //       amount: '4.20',
-  //       displayName: 'Example company',
-  //     ),
-  //   );
-  //   BraintreeDropInResult? result = await BraintreeDropIn.start(request);
-  //   if (result != null) {
-  //     print(result.paymentMethodNonce.description);
-  //     print(result.paymentMethodNonce.nonce);
-  //   }
-  // }
+  void _pay() async {
+    int stayDuration = dateTo.difference(dateFrom).inDays;
+
+    final request = BraintreeDropInRequest(
+        tokenizationKey: 'sandbox_d5mdw4py_dvv5t2rmpdypnqrj',
+        collectDeviceData: true,
+        paypalRequest: BraintreePayPalRequest(
+          amount: isResident
+              ? "${0.01 * stayDuration * int.parse(widget.loc.prices![0].replaceAll(',', ''))}"
+              : "${stayDuration * int.parse(widget.loc.prices![1].replaceAll(',', ''))}",
+          displayName: 'Go Kenya',
+        ),
+        cardEnabled: false);
+    BraintreeDropInResult? result = await BraintreeDropIn.start(request);
+    if (result != null) {
+      _saveTrip();
+
+      //navigate to thanks screen
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Thanks()));
+    } else {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => FailedPayment()));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final int stayDuration = dateTo.difference(dateFrom).inDays;
+
+    dbService.test(uid: uid);
 
     return SafeArea(
       child: Scaffold(
@@ -426,7 +399,7 @@ class _PlaceState extends State<Place> {
                       width: 40,
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: _pay,
                       child: Text(
                         'Book Now',
                         style: TextStyle(
@@ -581,7 +554,7 @@ class _PlaceState extends State<Place> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "${widget.loc.prices![0]} USD ",
+                          "${widget.loc.prices![0]} Ksh ",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
@@ -601,7 +574,7 @@ class _PlaceState extends State<Place> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "${widget.loc.prices![1]} USD ",
+                          "\$${widget.loc.prices![1]} ",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),

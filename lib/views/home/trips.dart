@@ -66,6 +66,32 @@ class _TripsState extends State<Trips> {
                           return Loading();
                         }
 
+                        if (snapshot.data!.docs.length < 1) {
+                          return (Container(
+                            child: Center(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'No trips yet.',
+                                  style: TextStyle(
+                                      fontSize: 28,
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  'Time to go on an adventure!',
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                              ],
+                            )),
+                          ));
+                        }
+
                         List<Trip> trips = [];
 
                         snapshot.data!.docs.forEach((doc) {

@@ -1,17 +1,39 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_kenya/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 // service for making authentication requests to Firebase
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
 
   //get current user
-
   Future<String> getCurrentUser() async {
     final User? user = _auth.currentUser;
 
     return user!.uid;
+  }
+
+  //get is user admin
+  Future<bool> getIsAdmin({required uid}) async {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    DocumentSnapshot snapshot = await users.doc(uid).get();
+    bool isAdmin = false;
+
+    try {
+      dynamic nested = snapshot.get(FieldPath(['isAdmin']));
+      inspect(nested);
+      isAdmin = nested;
+    } on StateError catch (e) {
+      print(e);
+    }
+
+    return isAdmin;
   }
 
   //create user obj based on FirebaseUser
@@ -79,6 +101,7 @@ class AuthService {
           'first_name': firstName,
           'last_name': lastName,
           'email': email,
+          'isAdmin': false,
         })
         .then((value) => print('userAdded'))
         .catchError((error) => print("Failed to add user: $error"));

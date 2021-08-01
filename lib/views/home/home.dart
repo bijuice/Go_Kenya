@@ -40,7 +40,7 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
-          ),
+          )
         ],
         showUnselectedLabels: true,
         iconSize: 25,
@@ -52,6 +52,7 @@ class _HomeState extends State<Home> {
       body: PageView(
         children: [Explore(), Trips(), Profile()],
         controller: controller,
+        onPageChanged: _onItemTapped,
       ),
     ));
   }

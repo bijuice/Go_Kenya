@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
@@ -23,6 +25,17 @@ class DatabaseService {
     });
   }
 
+  //test function
+  Future<void> test({required uid}) async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then((snapshot) => snapshot.data());
+
+    inspect(snapshot!['email']);
+  }
+
   //save trip to user
   Future<void> saveTrip(
       {required String locName,
@@ -38,6 +51,17 @@ class DatabaseService {
         .doc(uid)
         .collection('trips');
 
+    CollectionReference trip = FirebaseFirestore.instance.collection('trips');
+
+    var snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then((snapshot) => snapshot.data());
+
+    inspect(snapshot!['email']);
+
+    //add trip to user
     user
         .add({
           'loc_id': locID,
@@ -50,6 +74,24 @@ class DatabaseService {
         })
         .then((value) => print('trip added'))
         .catchError((error) => print('failed to add trip'));
+
+    //add trip to trips collection
+    trip
+        .add({
+          'uid': uid,
+          'loc_id': locID,
+          'dateFrom': dateFrom.toString(),
+          'dateTo': dateTo.toString(),
+          'guests': guests,
+          'isResident': isResident,
+          'locName': locName,
+          'prices': prices,
+          'firstName': snapshot['first_name'],
+          'lastName': snapshot['last_name'],
+          'email': snapshot['email']
+        })
+        .then((value) => print('trip added'))
+        .catchError((error) => print('failed to add trip'));
   }
 
   //get all trips for user
@@ -59,5 +101,10 @@ class DatabaseService {
         .doc(uid)
         .collection('trips')
         .get();
+  }
+
+  //get all trips for admin
+  Future<QuerySnapshot> getAdminTrips() async {
+    return await firestore.collection('trips').get();
   }
 }
