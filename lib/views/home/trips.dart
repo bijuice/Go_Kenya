@@ -96,13 +96,13 @@ class _TripsState extends State<Trips> {
 
                         snapshot.data!.docs.forEach((doc) {
                           Trip trip = new Trip(
-                              dateFrom: DateTime.parse(doc['dateFrom']),
-                              dateTo: DateTime.parse(doc['dateTo']),
-                              guests: doc['guests'],
-                              isResident: doc['isResident'],
-                              locID: doc['loc_id'],
-                              locName: doc['locName'],
-                              prices: doc['prices']);
+                            dateFrom: DateTime.parse(doc['dateFrom']),
+                            dateTo: DateTime.parse(doc['dateTo']),
+                            guests: doc['guests'],
+                            isResident: doc['isResident'],
+                            locID: doc['loc_id'],
+                            locName: doc['locName'],
+                          );
 
                           trips.add(trip);
                         });
@@ -110,11 +110,6 @@ class _TripsState extends State<Trips> {
                         return ListView.builder(
                             itemCount: trips.length,
                             itemBuilder: (context, index) {
-                              // final int stayDuration = trips[index]
-                              //     .dateTo
-                              //     .difference(trips[index].dateFrom)
-                              //     .inDays;
-
                               return Container(
                                 child: Card(
                                   child: Padding(

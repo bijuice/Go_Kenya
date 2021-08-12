@@ -25,17 +25,6 @@ class DatabaseService {
     });
   }
 
-  //test function
-  Future<void> test({required uid}) async {
-    var snapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .get()
-        .then((snapshot) => snapshot.data());
-
-    inspect(snapshot!['email']);
-  }
-
   //save trip to user
   Future<void> saveTrip(
       {required String locName,

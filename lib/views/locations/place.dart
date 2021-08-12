@@ -117,8 +117,6 @@ class _PlaceState extends State<Place> {
   Widget build(BuildContext context) {
     final int stayDuration = dateTo.difference(dateFrom).inDays;
 
-    dbService.test(uid: uid);
-
     return SafeArea(
       child: Scaffold(
         body: SlidingUpPanel(

@@ -22,6 +22,7 @@ class _RegisterState extends State<Register> {
   String password = '';
   String firstName = '';
   String lastName = '';
+  String phoneNumber = '';
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +109,29 @@ class _RegisterState extends State<Register> {
                   ),
                   SizedBox(
                     height: 20,
+                  ),
+
+                  TextFormField(
+                    decoration: InputDecoration(hintText: 'Phone Number'),
+                    validator: (val) {
+                      String phoneNo = val.toString();
+
+                      bool phoneValid = RegExp(
+                              r"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$")
+                          .hasMatch(phoneNo);
+
+                      if (!phoneValid) {
+                        return 'Please enter a valid phone number';
+                      }
+                      if (val!.isEmpty) {
+                        return 'The phone number field cannot be blank';
+                      }
+                    },
+                    onChanged: (val) {
+                      setState(() {
+                        phoneNumber = val;
+                      });
+                    },
                   ),
 
                   //password field

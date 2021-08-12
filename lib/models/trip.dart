@@ -4,7 +4,7 @@ class Trip {
   final bool isResident;
   final String locID;
   final String locName;
-  final List<dynamic> prices;
+
 
   Trip(
       {required this.locName,
@@ -13,5 +13,5 @@ class Trip {
       required this.guests,
       required this.isResident,
       required this.locID,
-      required this.prices});
+      });
 }
