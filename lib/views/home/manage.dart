@@ -45,16 +45,16 @@ class _ManageState extends State<Manage> {
 
                     snapshot.data!.docs.forEach((doc) {
                       AdminTrip adminTrip = new AdminTrip(
-                          dateFrom: DateTime.parse(doc['dateFrom']),
-                          dateTo: DateTime.parse(doc['dateTo']),
-                          guests: doc['guests'],
-                          isResident: doc['isResident'],
-                          locID: doc['loc_id'],
-                          locName: doc['locName'],
-                          prices: doc['prices'],
-                          firstName: doc['firstName'],
-                          lastName: doc['lastName'],
-                          email: doc['email']);
+                        dateFrom: DateTime.parse(doc['dateFrom']),
+                        dateTo: DateTime.parse(doc['dateTo']),
+                        guests: doc['guests'],
+                        isResident: doc['isResident'],
+                        locID: doc['loc_id'],
+                        locName: doc['locName'],
+                        firstName: doc['firstName'],
+                        lastName: doc['lastName'],
+                        email: doc['email'],
+                      );
 
                       adminTrips.add(adminTrip);
                     });

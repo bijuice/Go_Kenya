@@ -10,6 +10,7 @@ import 'package:maps_launcher/maps_launcher.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:go_kenya/services/location_service.dart';
 import 'package:flutter_braintree/flutter_braintree.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Place extends StatefulWidget {
   final Location loc;
@@ -42,6 +43,15 @@ class _PlaceState extends State<Place> {
     super.initState();
     _getCurrentLocation();
     _getCurrentUser();
+  }
+
+  //launch dialer
+  Future<void> _makePhoneCall(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   //get current user
@@ -87,6 +97,7 @@ class _PlaceState extends State<Place> {
         isResident: isResident);
   }
 
+  //pay function
   void _pay() async {
     int stayDuration = dateTo.difference(dateFrom).inDays;
 
@@ -595,8 +606,67 @@ class _PlaceState extends State<Place> {
                       color: Theme.of(context).primaryColor,
                     ),
                     SizedBox(
+                      height: 10,
+                    ),
+
+                    Text(
+                      "Staff Details ",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          "${widget.loc.staffDetails![0]}",
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w300,
+                              fontStyle: FontStyle.italic),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              _makePhoneCall(
+                                  'tel:${widget.loc.staffDetails![1]}');
+                            });
+                          },
+                          child: Text(
+                            "${widget.loc.staffDetails![1]}",
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic),
+                          ),
+                        )
+                      ],
+                    ),
+
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Divider(
+                      thickness: 1,
+                      indent: 60,
+                      endIndent: 60,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    SizedBox(
                       height: 20,
                     ),
+                    //tags
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 70, right: 70, bottom: 20),

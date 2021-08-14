@@ -10,6 +10,7 @@ class Location {
   final bool? hasPool;
   final bool? hasWifi;
   final bool? hasKitchen;
+  final List<dynamic>? staffDetails;
 
   Location(
       {this.locID,
@@ -25,5 +26,6 @@ class Location {
       this.hasKitchen,
       this.hasParking,
       this.hasPool,
-      this.hasWifi});
+      this.hasWifi,
+      this.staffDetails});
 }

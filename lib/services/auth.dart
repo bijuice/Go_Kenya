@@ -92,7 +92,8 @@ class AuthService {
   }
 
   //create user with user ID
-  Future<void>? createUser({uid, firstName, lastName, email}) async {
+  Future<void>? createUser(
+      {uid, firstName, lastName, email, phoneNumber}) async {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
 
     await users
@@ -101,6 +102,7 @@ class AuthService {
           'first_name': firstName,
           'last_name': lastName,
           'email': email,
+          'phoneNumber': phoneNumber,
           'isAdmin': false,
         })
         .then((value) => print('userAdded'))

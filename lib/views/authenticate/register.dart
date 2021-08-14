@@ -134,6 +134,10 @@ class _RegisterState extends State<Register> {
                     },
                   ),
 
+                  SizedBox(
+                    height: 20,
+                  ),
+
                   //password field
                   TextFormField(
                     decoration: InputDecoration(
@@ -181,7 +185,8 @@ class _RegisterState extends State<Register> {
                                     uid: result.uid,
                                     firstName: firstName,
                                     lastName: lastName,
-                                    email: email);
+                                    email: email,
+                                    phoneNumber: phoneNumber);
                               }
 
                               print(result.uid);

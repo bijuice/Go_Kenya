@@ -109,7 +109,8 @@ class _ExploreState extends State<Explore> with AutomaticKeepAliveClientMixin {
                             hasKitchen: doc['hasKitchen'],
                             hasParking: doc['hasParking'],
                             hasPool: doc['hasPool'],
-                            hasWifi: doc['hasWifi']);
+                            hasWifi: doc['hasWifi'],
+                            staffDetails: doc['staffDetails']);
 
                         locations.add(loc);
                       });

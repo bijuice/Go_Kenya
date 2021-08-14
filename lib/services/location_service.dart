@@ -77,7 +77,8 @@ class DatabaseService {
           'prices': prices,
           'firstName': snapshot['first_name'],
           'lastName': snapshot['last_name'],
-          'email': snapshot['email']
+          'email': snapshot['email'],
+          'phoneNumber': snapshot['phoneNumber'],
         })
         .then((value) => print('trip added'))
         .catchError((error) => print('failed to add trip'));

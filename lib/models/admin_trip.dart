@@ -4,10 +4,11 @@ class AdminTrip {
   final bool isResident;
   final String locID;
   final String locName;
-  final List<dynamic> prices;
+  final List<dynamic>? prices;
   final String firstName;
   final String lastName;
   final String email;
+  final String? phoneNumber;
 
   AdminTrip(
       {required this.dateFrom,
@@ -16,8 +17,9 @@ class AdminTrip {
       required this.isResident,
       required this.locID,
       required this.locName,
-      required this.prices,
+      this.prices,
       required this.firstName,
       required this.lastName,
-      required this.email});
+      required this.email,
+      this.phoneNumber});
 }
